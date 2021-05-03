@@ -1,149 +1,123 @@
-import React, {Component} from 'react';
-import './Header.css';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import InputBase from '@material-ui/core/InputBase';
+import React, {Component, Fragment} from 'react'
+import {withRouter} from 'react-router';
+import {Link} from 'react-router-dom';
+import './Header.css'
 import {withStyles} from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
+import Input from '@material-ui/core/Input';
+import Search from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import Popover from '@material-ui/core/Popover';
-import { Link } from 'react-router-dom';
+import Popover from '@material-ui/core/Popover'
+import MenuItem from '@material-ui/core/MenuItem'
 
-const styles = theme => ({
-  grow: {
-    flexGrow: 1
-  },
-  search: {
-    position: 'relative',
-    borderRadius: '4px',
-    backgroundColor: '#c0c0c0',
-    marginLeft: 0,
-    width: '300px',
-  },
-  searchIcon: {
-    width: theme.spacing.unit * 4,
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color:'#000000'
-  },
-  inputInput: {
-    paddingTop: theme.spacing.unit,
-    paddingRight: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
-    paddingLeft: theme.spacing.unit * 4,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: 120,
-      '&:focus': {
-        width: 200
-      }
+const classes = theme => ({
+    searchContainer: {
+        borderRadius: '4px',
+        backgroundColor: '#c0c0c0',
+        width: '280px',
+        display: 'flex',
+        flexFlow: 'row nowrap',
+        alignItems: 'center',
+        justifyItems: 'center',
+        padding: '0 10px',
+        margin: '0 10px'
+    },
+    searchIcon: {
+        width: '30px'
+    },
+    searchBar: {
+        width: '100%'
+    },
+    avatar: {
+        width: '30px',
+        height: '30px',
+        margin: '0 10px',
+        border: "1px solid white"
     }
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-  },
-  appHeader:{
-    backgroundColor:'#263238'
-  },
-  hr:{
-    height:'1.5px',
-    backgroundColor:'#f2f2f2',
-    marginLeft:'5px',
-    marginRight:'5px'
-  }
 })
 
-//This page handles the header part of the image viewer application
+class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            popoverAnchor: null
+        }
+    }
 
-class Header extends Component{
+    handleAvatarClick = (event) => {
+        this.setState({popoverAnchor: event.currentTarget})
+    }
 
-  constructor(props){
-    super(props);
-    this.state = {
-      anchorEl: null,
-    };
-  }
+    handlePopoverClose = () => {
+        this.setState({popoverAnchor: null})
+    }
 
-  render(){
-    const {classes,screen} = this.props;
-    return (<div>
-        <AppBar className={classes.appHeader}>
-          <Toolbar>
-            {(screen === "Login" || screen === "Home") && <span className="header-logo">Image Viewer</span>}
-            {(screen === "Profile") && <Link style={{ textDecoration: 'none', color: 'white' }} to="/home"><span className="header-logo">Image Viewer</span></Link>}
-            <div className={classes.grow}/>
-            {(screen === "Home") &&
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <InputBase onChange={(e)=>{this.props.searchHandler(e.target.value)}} placeholder="Search…" classes={{
-                    input: classes.inputInput
-                  }}/>
-              </div>
-            }
-            {(screen === "Home" || screen === "Profile")  &&
-              <div>
-                <IconButton onClick={this.handleClick}>
-                  <Avatar alt="Profile Pic" src={this.props.userProfileUrl} className={classes.avatar} style={{border: "1px solid #fff"}}/>
-                </IconButton>
-                <Popover
-                  id="simple-menu"
-                  anchorEl={this.state.anchorEl}
-                  open={Boolean(this.state.anchorEl)}
-                  onClose={this.handleClose}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                  }}>
-                    <div style={{padding:'5px'}}>
-                      { (screen === "Home") &&
-                        <div>
-                          <MenuItem onClick={this.handleAccount}>My Account</MenuItem>
-                          <div className={classes.hr}/>
-                        </div>
-                      }
-                      <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+    navigateToMyAccount = () => {
+        this.handlePopoverClose();
+        this.props.history.push('/profile')
+    }
+
+    logoutUser = () => {
+        localStorage.removeItem('access-token');
+        this.handlePopoverClose();
+        this.props.history.push('/');
+    }
+
+    render() {
+        const {classes, location} = this.props;
+        const isUserLoggedIn = localStorage.getItem('access-token') !== null;
+        return (
+            <div className='app-header'>
+                <Link to="/home">
+                    <span className='app-logo'>Image Viewer</span>
+                </Link>
+                {
+                    isUserLoggedIn &&
+                    <div className='menu-container'>
+                        {
+                            location.pathname === "/home" &&
+                            <div className={classes.searchContainer}>
+                                <div className={classes.searchIcon}>
+                                    <Search/>
+                                </div>
+                                <Input className={classes.searchBar} disableUnderline placeholder="Search..."
+                                       onChange={this.props.handleInputChange}/>
+                            </div>
+                        }
+                        <IconButton size='small' onClick={this.handleAvatarClick}>
+                            <Avatar alt="Profile Picture" variant='circular' src='profile_pic_dummy.jpg'
+                                    className={classes.avatar}/>
+                        </IconButton>
+                        <Popover
+                            id="avatar-popover"
+                            className={classes.popover}
+                            open={Boolean(this.state.popoverAnchor)}
+                            anchorEl={this.state.popoverAnchor}
+                            onClose={this.handlePopoverClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}>
+                            <div className="popover-menu">
+                                {
+                                    location.pathname === "/home" &&
+                                    <Fragment>
+                                        <MenuItem onClick={this.navigateToMyAccount}>My Account</MenuItem>
+                                        <hr className="popover-menu-divider"/>
+                                    </Fragment>
+                                }
+                                <MenuItem onClick={this.logoutUser}>Logout</MenuItem>
+                            </div>
+                        </Popover>
                     </div>
-                </Popover>
-              </div>
-            }
-          </Toolbar>
-        </AppBar>
-    </div>)
-  }
-
-  handleClick = (event) =>{
-    this.setState({
-      anchorEl: event.currentTarget
-    })
-  }
-
-  handleAccount = ()=>{
-    this.props.handleAccount();
-    this.handleClose();
-  }
-
-  handleLogout = ()=>{
-    this.props.handleLogout();
-    this.handleClose();
-  }
-
-  handleClose = () =>{
-    this.setState({ anchorEl: null });
-  }
+                }
+            </div>
+        )
+    }
 }
 
-export default withStyles(styles)(Header)
+export default withRouter(withStyles(classes)(Header))
