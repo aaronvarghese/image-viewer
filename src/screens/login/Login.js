@@ -36,7 +36,7 @@ class Login extends Component {
             password: "",
             passwordRequired: "dispNone",
             incorrectUsernamePassword: "dispNone",
-            loggedIn: sessionStorage.getItem('access-token') == null ? false : true
+            loggedIn: sessionStorage.getItem('access-token') != null
         };
     }
 
@@ -49,7 +49,7 @@ class Login extends Component {
 
         if (this.state.username === "admin" && this.state.password === "admin") {
             sessionStorage.setItem('username','admin');
-            sessionStorage.setItem('access-token', 'IGQVJVZAEhPNkliSlVsQ0RaOGxrWjV2M1g5Y1dmUXVHZAl9mMzdHLUlZANHZASX0gxM0pDbmVuSXUySkV2YXVYRDIxR0tTTkdpaG8wRWhFdW5IM1NBWmx3c1E2M2s5cFB6ZAnR4N1V4NXk0RGxmQVN5WUxIU25kNnBtb1ozUHJN');
+            sessionStorage.setItem('access-token', 'IGQVJXTU5xN0Nya3dDNFEzRk9FSnotZAUs5dkJYTy1sZAFhhNVRQUG1seHgtcklYSmR0XzJCVlJpQkxnSE83dXZAlZAWZA2QzBqZAjhtbjNtb0RwLWotUE9NcnE3WHBiZAGNLWHpQdUNLenJIeS1nYUVIbk9IblRKaFFWWThlZADgw');
             this.setState({ loggedIn: true });
             this.props.history.push('/home');
         } else {
