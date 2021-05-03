@@ -1,5 +1,5 @@
 .dispNone {
-    display:none;
+    display: none;
 }
 
 .dispBlock {
@@ -9,7 +9,8 @@
 .red {
     color: red;
 }
-.main-container{
-  display: flex;
-  flex-direction: column;
+
+.main-container {
+    display: flex;
+    flex-direction: column;
 }

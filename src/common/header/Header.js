@@ -85,7 +85,8 @@ class Header extends Component {
                             </div>
                         }
                         <IconButton size='small' onClick={this.handleAvatarClick}>
-                            <Avatar alt="Profile Picture" variant='circular' src='https://graph.facebook.com/doggocave/picture'
+                            <Avatar alt="Profile Picture" variant='circular'
+                                    src='https://graph.facebook.com/doggocave/picture'
                                     className={classes.avatar}/>
                         </IconButton>
                         <Popover

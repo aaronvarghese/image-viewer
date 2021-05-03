@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import React, {Component} from 'react';
+import {withRouter} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -41,28 +41,30 @@ class Login extends Component {
     }
 
     loginClickHandler = () => {
-        this.setState({ incorrectUsernamePassword: "dispNone" });
-        this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
-        this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
+        this.setState({incorrectUsernamePassword: "dispNone"});
+        this.state.username === "" ? this.setState({usernameRequired: "dispBlock"}) : this.setState({usernameRequired: "dispNone"});
+        this.state.password === "" ? this.setState({passwordRequired: "dispBlock"}) : this.setState({passwordRequired: "dispNone"});
 
-        if (this.state.username === "" || this.state.password === "") { return }
+        if (this.state.username === "" || this.state.password === "") {
+            return
+        }
 
         if (this.state.username === "admin" && this.state.password === "admin") {
-            sessionStorage.setItem('username','admin');
+            sessionStorage.setItem('username', 'admin');
             sessionStorage.setItem('access-token', 'IGQVJYRjRVeVZATRFpCQ0dha2ZAnczF0MXFlNFpYYzhDUEVaMDVlUVlnZAzg1TXBfdVhLUVdyVVhuN1ZA5Qm1GeDN4SmczV0ctYzhQcHlxaERPUF8tSHB6MGJSdzkzYXlwQndiLVJZAMXhB');
-            this.setState({ loggedIn: true });
+            this.setState({loggedIn: true});
             this.props.history.push('/home');
         } else {
-            this.setState({ incorrectUsernamePassword: "dispBlock" });
+            this.setState({incorrectUsernamePassword: "dispBlock"});
         }
     }
 
     inputUsernameChangeHandler = (e) => {
-        this.setState({ username: e.target.value })
+        this.setState({username: e.target.value})
     }
 
     inputPasswordChangeHandler = (e) => {
-        this.setState({ password: e.target.value })
+        this.setState({password: e.target.value})
     }
 
     render() {
@@ -71,18 +73,24 @@ class Login extends Component {
                 <Header/>
                 <Card style={styles.card}>
                     <CardContent>
-                        <Typography style={styles.title}> LOGIN </Typography><br />
+                        <Typography style={styles.title}> LOGIN </Typography><br/>
                         <FormControl required style={{width: '100%'}}>
                             <InputLabel htmlFor="username"> Username </InputLabel>
-                            <Input id="username" type="text" value={this.state.username} onChange={this.inputUsernameChangeHandler} />
-                            <FormHelperText className={this.state.usernameRequired}><span className="red">required</span></FormHelperText>
-                        </FormControl><br /><br />
+                            <Input id="username" type="text" value={this.state.username}
+                                   onChange={this.inputUsernameChangeHandler}/>
+                            <FormHelperText className={this.state.usernameRequired}><span
+                                className="red">required</span></FormHelperText>
+                        </FormControl><br/><br/>
                         <FormControl required style={{width: '100%'}}>
                             <InputLabel htmlFor="password"> Password </InputLabel>
-                            <Input id="password" type="password" onChange={this.inputPasswordChangeHandler} value={this.state.password} />
-                            <FormHelperText className={this.state.passwordRequired}><span className="red">required</span></FormHelperText>
-                        </FormControl><br /><br />
-                        <div className={this.state.incorrectUsernamePassword}><span className="red"> Incorrect username and/or password </span></div><br />
+                            <Input id="password" type="password" onChange={this.inputPasswordChangeHandler}
+                                   value={this.state.password}/>
+                            <FormHelperText className={this.state.passwordRequired}><span
+                                className="red">required</span></FormHelperText>
+                        </FormControl><br/><br/>
+                        <div className={this.state.incorrectUsernamePassword}><span className="red"> Incorrect username and/or password </span>
+                        </div>
+                        <br/>
                         <Button variant="contained" color="primary" onClick={this.loginClickHandler}> LOGIN </Button>
                     </CardContent>
                 </Card>
