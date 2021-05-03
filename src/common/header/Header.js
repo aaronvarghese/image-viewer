@@ -14,7 +14,7 @@ const classes = theme => ({
     searchContainer: {
         borderRadius: '4px',
         backgroundColor: '#c0c0c0',
-        width: '280px',
+        width: '300px',
         display: 'flex',
         flexFlow: 'row nowrap',
         alignItems: 'center',
@@ -58,14 +58,14 @@ class Header extends Component {
     }
 
     logoutUser = () => {
-        localStorage.removeItem('access-token');
+        sessionStorage.removeItem('access-token');
         this.handlePopoverClose();
         this.props.history.push('/');
     }
 
     render() {
         const {classes, location} = this.props;
-        const isUserLoggedIn = localStorage.getItem('access-token') !== null;
+        const isUserLoggedIn = sessionStorage.getItem('access-token') !== null;
         return (
             <div className='app-header'>
                 <Link to="/home">
@@ -85,7 +85,7 @@ class Header extends Component {
                             </div>
                         }
                         <IconButton size='small' onClick={this.handleAvatarClick}>
-                            <Avatar alt="Profile Picture" variant='circular' src='profile_pic_dummy.jpg'
+                            <Avatar alt="Profile Picture" variant='circular' src='https://graph.facebook.com/doggocave/picture'
                                     className={classes.avatar}/>
                         </IconButton>
                         <Popover

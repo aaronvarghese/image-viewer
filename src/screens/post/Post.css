@@ -38,7 +38,10 @@
     display: flex;
     flex-flow: row nowrap;
     align-items: flex-start;
+
+
 }
+
 
 .profile-modal-media-image {
     width: 400px;
